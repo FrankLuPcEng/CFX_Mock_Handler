@@ -1,0 +1,7 @@
+mode: ContinuousDeployment
+branches:
+  main:
+    regex: main
+    mode: ContinuousDeployment
+ignore:
+  sha: []
