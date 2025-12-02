@@ -1,0 +1,80 @@
+<Window x:Class="CfxTestTool.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="CfxTestTool" Height="800" Width="1200">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
+
+        <!-- Settings -->
+        <Border Grid.Row="0" Padding="10" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4" Background="#F7F7F7">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="AMQP URI" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <TextBox Grid.Column="1" Text="{Binding Settings.AmqpUri, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" />
+
+                <TextBlock Grid.Column="2" Text="Exchange" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <TextBox Grid.Column="3" Text="{Binding Settings.Exchange, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" />
+
+                <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="6">
+                    <Button Content="Load" Command="{Binding LoadSettingsCommand}" Width="80" Margin="0,0,4,0" />
+                    <Button Content="Save" Command="{Binding SaveSettingsCommand}" Width="80" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Text="Routing Key" VerticalAlignment="Center" Margin="0,8,8,0" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Settings.RoutingKey, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,10,0" />
+
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Queue" VerticalAlignment="Center" Margin="0,8,8,0" />
+                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Settings.Queue, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,10,0" />
+            </Grid>
+        </Border>
+
+        <!-- Main area -->
+        <Grid Grid.Row="1" Margin="0,10,0,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Spacing="8" Grid.Row="0" Margin="0,0,0,10">
+                <Button Content="Send" Command="{Binding SendCommand}" Width="100" />
+                <Button Content="Start Receive" Command="{Binding StartReceiveCommand}" Width="120" />
+                <Button Content="Stop Receive" Command="{Binding StopReceiveCommand}" Width="120" />
+            </StackPanel>
+
+            <Grid Grid.Row="1" ColumnDefinitions="250,*" ColumnSpacing="10">
+                <ListBox ItemsSource="{Binding MessageTypes}"
+                         SelectedItem="{Binding SelectedMessageType, Mode=TwoWay}"
+                         />
+                <TextBox Grid.Column="1" Text="{Binding SelectedMessageJson, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="13" />
+            </Grid>
+        </Grid>
+
+        <!-- Logs -->
+        <Border Grid.Row="2" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4">
+            <StackPanel>
+                <TextBlock Text="Message Log" FontWeight="Bold" Padding="6" Background="#F7F7F7" />
+                <ListBox ItemsSource="{Binding Logs}" DisplayMemberPath="Message" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
